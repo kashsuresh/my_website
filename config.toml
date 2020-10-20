@@ -104,15 +104,15 @@ disqusShortname = ""
       url = "blogs/tempus"
 
     [[params.tiles.showcase]]
-      title = "Magna"
-      subtitle = "Lorem Etiam Nullam"
-      image = "pic03.jpg"
+      title = "GDP composition over time"
+      subtitle = "Focus on India, Germany and the US"
+      image = "dehli.jpg"
       url = "blogs/magna"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
+      title = "Dow Jones Industrial Average"
+      subtitle = "Analysis on expected returns"
+      image = "stock.jpg"
       url = "blogs/ipsum"
 
   #  [[params.tiles.showcase]]
@@ -136,16 +136,16 @@ disqusShortname = ""
     # To add more blogs just copy and paste the code.
 
   # Section Type Two
-  [params.two]
-    enable = true
-    title = "Massa libero"
-    subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
-    Mauris aliquet magna magna sed nunc rhoncus pharetra. 
-    Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
-    Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
-    Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
-    buttonText = "Get Started"
-    url = "blogs"
+  #[params.two]
+   # enable = true
+   # title = "Massa libero"
+    #subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
+   # Mauris aliquet magna magna sed nunc rhoncus pharetra. 
+ #   Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
+  #  Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
+  #  Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
+  #  buttonText = "Get Started"
+  #  url = "blogs"
 
 
   # Contact section
