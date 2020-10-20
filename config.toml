@@ -93,14 +93,14 @@ disqusShortname = ""
     
     [[params.tiles.showcase]]
       title = "Airbnb Mexico City"
-     # subtitle = "Analysis on price per night"
+     subtitle = "Analysis on price per night"
       image = "mexicocity.jpg"
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
-      image = "pic02.jpg"
+      title = "Trump Approval Ratings"
+      subtitle = "2017-2020"
+      image = "obama.jpg"
       url = "blogs/tempus"
 
     [[params.tiles.showcase]]
