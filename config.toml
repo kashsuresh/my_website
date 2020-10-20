@@ -92,9 +92,9 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Aliquam"
-      subtitle = "Ipsum Dolor Sit Amet"
-      image = "pic01.jpg"
+      title = "Airbnb Mexico City"
+     # subtitle = "Analysis on price per night"
+      image = "mexicocity.jpg"
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
