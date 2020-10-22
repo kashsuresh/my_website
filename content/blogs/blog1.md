@@ -61,6 +61,9 @@ UN_GDP_data  <-  read_excel(here::here("data", "Download-GDPconstant-USD-countri
 
  The first thing you need to do is to tidy the data, as it is in wide format and you must make it into long, tidy format. Please express all figures in billions (divide values by `1e9`, or $10^9$), and you want to rename the indicators into something shorter.
 
+
+# Tidy the data
+
 ```{r reshape_GDP_data}
 
 tidy_GDP_data  <-  UN_GDP_data %>%
@@ -87,14 +90,7 @@ glimpse(tidy_GDP_data)
 # Let us compare GDP components for these 3 countries
 country_list <- c("United States","India", "Germany")
 ```
-
-First, can you produce this plot?
-
-
-```{r gdp1, echo=FALSE, out.width="100%"}
-knitr::include_graphics(here::here("images", "gdp1.png"), error = FALSE)
-```
-
+#Produce plot
 
 ```{r plot1, echo=FALSE, out.width="100%"}
 
@@ -121,7 +117,7 @@ ggplot(GDP_components_data, aes(x= Year , y= Value, colour = `Components of GDP`
 
 Secondly, recall that GDP is the sum of Household Expenditure (Consumption *C*), Gross Capital Formation (business investment *I*), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator `Gross Domestic Product (GDP)` in your dataframe, I would like you to calculate it given its components discussed above.
 
-> What is the % difference between what you calculated as GDP and the GDP figure included in the dataframe?
+#Difference between actual and manual calculation
 
 ```{r manual_calc, echo=FALSE, out.width="100%"}
 
@@ -220,7 +216,7 @@ ggplot(tidy_data_plot_2)+
 
 ```
 
-> What is this last chart telling you? Can you explain in a couple of paragraphs the different dynamic among these three countries? 
+#Findings
 
 
 The chart  allows us to compare the composition of GDP between the countries over time. Overall, the percentage contribution of the components seem to be similar across the three countries, with household expenditure accounting for the majority of GDP and net exports accounting for the least.There are time when GCF plays a more important role relative to government expenditure and vice versa, this seems to depend on country specific dynamics. 

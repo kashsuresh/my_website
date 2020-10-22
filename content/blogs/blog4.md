@@ -64,4 +64,4 @@ ggplot(nap_data, aes(x=week, fill=as.factor(year), y=mean_approval_margin, colou
 
 Compare the confidence intervals for `week 15` (6-12 April 2020) and `week 34` (17-23 August 2020). Can you explain what's going on? One paragraph would be enough.
 
-In week 15§ the standard error is quite small (at around 1), while in week 34, the standard error is significantly bigger (at around 2.6), as highlighted by the chart. This results in a larger 95% confidence interval from the mean approval rate. This could be caused by an increase in variability or reduction in sample size - the table confirms this hypothesis.
+In week 15 the standard error is quite small (at around 1), while in week 34, the standard error is significantly bigger (at around 2.6), as highlighted by the chart. This results in a larger 95% confidence interval from the mean approval rate. This could be caused by an increase in variability or reduction in sample size - the table confirms this hypothesis.
