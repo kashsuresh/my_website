@@ -107,7 +107,7 @@ disqusShortname = ""
       title = "GDP composition over time"
       subtitle = "Focus on India, Germany and the US"
       image = "dehli.jpg"
-      url = "blogs/magna"
+      url = "projects/GDP"
 
     [[params.tiles.showcase]]
       title = "Dow Jones Industrial Average"
@@ -187,7 +187,7 @@ disqusShortname = ""
   # Footer section
   [params.footer]
     enable = true
-    copyright = "Company Name"
+    copyright = "Kash Suresh"
 
     # Uses font awesome icons
    # [[params.footer.social]]
