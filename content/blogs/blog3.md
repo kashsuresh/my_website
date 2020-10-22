@@ -3,9 +3,9 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:26:13-05:00"
-description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.
+description: Analysis on expected return vs risk - focus on DJIA. 
 draft: false
-image: pic08.jpg
+image: stock.jpg
 keywords: ""
 slug: DJIA
 title: "Risk/Return Analysis on DJIA"
@@ -85,7 +85,6 @@ myStocks <- tickers %>%
          to   = "2020-08-31") %>%
   group_by(symbol) 
 
-glimpse(myStocks) # examine the structure of the resulting data frame
 ```
 
 Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.
@@ -133,8 +132,7 @@ monthly_summ <- myStocks_returns_monthly %>%
 
 #add new variables for description
 monthly_summ_table <- mutate(monthly_summ, min_return = min(monthly_returns), max_return = max(monthly_returns),mean_return = mean(monthly_returns), median_return = median(monthly_returns),  sd_return = sd(monthly_returns)) %>%
-  group_by(symbol) %>%
-print()
+  group_by(symbol) 
 
 #summarise and save down as data frame
 monthly_summ_1 <- monthly_summ_table %>% 
