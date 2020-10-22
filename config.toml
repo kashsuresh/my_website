@@ -94,7 +94,7 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "Donald Trump Approval Ratings"
      subtitle = "2017-2020"
-      image = "trump.jpg"
+      image = "obama.jpg"
       url = "blogs/trump"
 
     [[params.tiles.showcase]]
