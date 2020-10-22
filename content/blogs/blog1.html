@@ -1,0 +1,201 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:26:13-05:00"
+description: Analysis on expected return vs risk - focus on DJIA. 
+draft: false
+image: stock.jpg
+keywords: ""
+slug: DJIA
+title: "Risk/Return Analysis on DJIA"
+---
+
+
+
+<pre class="r"><code>library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(rvest)    # scrape websites
+library(purrr)  
+library(lubridate) #to handle dates
+library(kableExtra)
+library(knitr)
+library(dplyr)
+library(gapminder)
+library(ggplot2)
+library(patchwork)
+library(scales)</code></pre>
+<p>We will use the <code>tidyquant</code> package to download historical data of stock prices, calculate returns, and examine the distribution of returns.</p>
+<p>We must first identify which stocks we want to download data for, and for this we must know their ticker symbol; Apple is known as AAPL, Microsoft as MSFT, McDonald’s as MCD, etc. The file <code>nyse.csv</code> contains 508 stocks listed on the NYSE, their ticker <code>symbol</code>, <code>name</code>, the IPO (Initial Public Offering) year, and the sector and industry the company is in.</p>
+<pre class="r"><code>nyse &lt;- read_csv(here::here(&quot;data&quot;,&quot;nyse.csv&quot;))</code></pre>
+<div id="plot-number-of-companies-per-sector" class="section level1">
+<h1>Plot number of companies per sector</h1>
+<pre class="r"><code># YOUR CODE GOES HERE
+sector_chart &lt;- nyse %&gt;%
+  count(sector) %&gt;%
+  arrange(desc(n))
+
+ggplot(sector_chart,aes(x=reorder(sector,-n),y=n))+geom_col() + theme(axis.title = element_text(face=&quot;bold&quot;),  title = element_text(face=&quot;bold&quot;), plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, vjust= 1, hjust= 1)) + labs( title  = &quot;Companies per Sector in the S&amp;P500&quot;, x = &quot;Sector&quot; , y = &quot;Count&quot;, caption = &quot;Source: NYSE&quot;) + NULL</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/companies_per_sector-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>Next, let’s choose the <a href="https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average">Dow Jones Industrial Aveareg (DJIA)</a> stocks and their ticker symbols and download some data. Besides the thirty stocks that make up the DJIA, we will also add <code>SPY</code> which is an SP500 ETF (Exchange Traded Fund).</p>
+<pre class="r"><code>djia_url &lt;- &quot;https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average&quot;
+
+#get tables that exist on URL
+tables &lt;- djia_url %&gt;% 
+  read_html() %&gt;% 
+  html_nodes(css=&quot;table&quot;)
+
+
+# parse HTML tables into a dataframe called djia. 
+# Use purr::map() to create a list of all tables in URL
+djia &lt;- map(tables, . %&gt;% 
+               html_table(fill=TRUE)%&gt;% 
+               clean_names())
+
+
+# constituents
+table1 &lt;- djia[[2]] %&gt;% # the second table on the page contains the ticker symbols
+  mutate(date_added = ymd(date_added),
+         
+         # if a stock is listed on NYSE, its symbol is, e.g., NYSE: MMM
+         # We will get prices from yahoo finance which requires just the ticker
+         
+         # if symbol contains &quot;NYSE*&quot;, the * being a wildcard
+         # then we jsut drop the first 6 characters in that string
+         ticker = ifelse(str_detect(symbol, &quot;NYSE*&quot;),
+                          str_sub(symbol,7,11),
+                          symbol)
+         )
+
+# we need a vector of strings with just the 30 tickers + SPY
+tickers &lt;- table1 %&gt;% 
+  select(ticker) %&gt;% 
+  pull() %&gt;% # pull() gets them as a sting of characters
+  c(&quot;SPY&quot;) # and lets us add SPY, the SP500 ETF</code></pre>
+<pre class="r"><code>myStocks &lt;- tickers %&gt;% 
+  tq_get(get  = &quot;stock.prices&quot;,
+         from = &quot;2000-01-01&quot;,
+         to   = &quot;2020-08-31&quot;) %&gt;%
+  group_by(symbol) </code></pre>
+<p>Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.</p>
+<pre class="r"><code>#calculate daily returns
+myStocks_returns_daily &lt;- myStocks %&gt;%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = &quot;daily&quot;, 
+               type       = &quot;log&quot;,
+               col_rename = &quot;daily_returns&quot;,
+               cols = c(nested.col))  
+
+#calculate monthly  returns
+myStocks_returns_monthly &lt;- myStocks %&gt;%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = &quot;monthly&quot;, 
+               type       = &quot;arithmetic&quot;,
+               col_rename = &quot;monthly_returns&quot;,
+               cols = c(nested.col)) 
+
+#calculate yearly returns
+myStocks_returns_annual &lt;- myStocks %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = &quot;yearly&quot;, 
+               type       = &quot;arithmetic&quot;,
+               col_rename = &quot;yearly_returns&quot;,
+               cols = c(nested.col))</code></pre>
+<p>Now I will create a dataframe and assign it to a new object, where I’ll summarise monthly returns since 2017-01-01 for each of the stocks and <code>SPY</code>; min, max, median, mean, SD.</p>
+<pre class="r"><code>library(kableExtra)
+
+# filter to keep data only after 2017-01-01
+monthly_summ &lt;- myStocks_returns_monthly %&gt;%
+  filter(date &gt;= &quot;2017-01-01&quot;) %&gt;%
+  group_by(symbol)
+
+#add new variables for description
+monthly_summ_table &lt;- mutate(monthly_summ, min_return = min(monthly_returns), max_return = max(monthly_returns),mean_return = mean(monthly_returns), median_return = median(monthly_returns),  sd_return = sd(monthly_returns)) %&gt;%
+  group_by(symbol) 
+
+#summarise and save down as data frame
+monthly_summ_1 &lt;- monthly_summ_table %&gt;% 
+summarise(min_return = min(monthly_returns), max_return = max(monthly_returns),mean_return = mean(monthly_returns), median_return = median(monthly_returns), sd_return = sd(monthly_returns))
+
+data.frame(monthly_summ_1)</code></pre>
+<pre><code>##    symbol min_return max_return mean_return median_return sd_return
+## 1    AAPL    -0.1812     0.2004    3.87e-02       0.05135    0.0873
+## 2    AMGN    -0.1038     0.1800    1.71e-02       0.02348    0.0664
+## 3     AXP    -0.2212     0.0988    1.09e-02       0.01503    0.0639
+## 4      BA    -0.4579     0.2568    1.24e-02       0.02504    0.1198
+## 5     CAT    -0.1993     0.1376    1.51e-02       0.03181    0.0742
+## 6     CRM    -0.1550     0.3913    3.50e-02       0.04027    0.0850
+## 7    CSCO    -0.1551     0.1296    1.25e-02       0.01853    0.0673
+## 8     CVX    -0.2237     0.2697   -9.26e-04       0.00173    0.0748
+## 9     DIS    -0.1789     0.2336    9.67e-03      -0.00208    0.0750
+## 10    DOW    -0.2764     0.2548    8.98e-03       0.04564    0.1282
+## 11     GS    -0.2300     0.1865    1.44e-03       0.00540    0.0815
+## 12     HD    -0.1510     0.1774    2.13e-02       0.02518    0.0626
+## 13    HON    -0.1750     0.1336    1.30e-02       0.02080    0.0574
+## 14    IBM    -0.2366     0.1825    7.02e-05       0.00797    0.0734
+## 15   INTC    -0.2022     0.1946    1.23e-02       0.01348    0.0731
+## 16    JNJ    -0.1215     0.1442    1.01e-02       0.01163    0.0496
+## 17    JPM    -0.2246     0.1552    8.90e-03       0.00911    0.0694
+## 18     KO    -0.1655     0.0632    7.92e-03       0.01660    0.0459
+## 19    MCD    -0.1484     0.1343    1.64e-02       0.01572    0.0534
+## 20    MMM    -0.1498     0.1129    2.90e-03       0.01227    0.0650
+## 21    MRK    -0.1396     0.0922    1.22e-02       0.01539    0.0498
+## 22   MSFT    -0.0840     0.1363    3.27e-02       0.02877    0.0503
+## 23    NKE    -0.1193     0.1529    2.13e-02       0.02706    0.0672
+## 24     PG    -0.0914     0.1035    1.51e-02       0.01978    0.0460
+## 25    SPY    -0.1249     0.1270    1.29e-02       0.01832    0.0457
+## 26    TRV    -0.1653     0.1053    2.06e-03       0.01177    0.0533
+## 27    UNH    -0.1146     0.1728    1.86e-02       0.02105    0.0637
+## 28      V    -0.1136     0.1346    2.53e-02       0.02815    0.0520
+## 29     VZ    -0.1171     0.0980    7.33e-03       0.01245    0.0478
+## 30    WBA    -0.1930     0.1266   -1.20e-02      -0.00975    0.0738
+## 31    WMT    -0.1556     0.1174    1.96e-02       0.02574    0.0535</code></pre>
+<pre class="r"><code>#present as table  
+monthly_summ_1 %&gt;%
+ #kable (digits=4, align = rep(&#39;c&#39;,5)) %&gt;%
+  #kable_styling() %&gt;% 
+  print()</code></pre>
+<pre><code>## # A tibble: 31 x 6
+##    symbol min_return max_return mean_return median_return sd_return
+##    &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+##  1 AAPL       -0.181     0.200     0.0387         0.0513     0.0873
+##  2 AMGN       -0.104     0.180     0.0171         0.0235     0.0664
+##  3 AXP        -0.221     0.0988    0.0109         0.0150     0.0639
+##  4 BA         -0.458     0.257     0.0124         0.0250     0.120 
+##  5 CAT        -0.199     0.138     0.0151         0.0318     0.0742
+##  6 CRM        -0.155     0.391     0.0350         0.0403     0.0850
+##  7 CSCO       -0.155     0.130     0.0125         0.0185     0.0673
+##  8 CVX        -0.224     0.270    -0.000926       0.00173    0.0748
+##  9 DIS        -0.179     0.234     0.00967       -0.00208    0.0750
+## 10 DOW        -0.276     0.255     0.00898        0.0456     0.128 
+## # … with 21 more rows</code></pre>
+<p>Plot a density plot, using <code>geom_density()</code>, for each of the stocks</p>
+<pre class="r"><code>#ggplot faceted for each stock to show density plot of returns
+
+ggplot(monthly_summ_table, aes(x=monthly_returns, colour = symbol)) +geom_density(alpha=0.3) +facet_wrap(&quot;symbol&quot;) + theme (axis.title = element_text(face=&quot;bold&quot;),  title = element_text(face=&quot;bold&quot;), plot.title = element_text(hjust = 0.5) , axis.text.x = element_text(angle = 90, vjust= 1, hjust= 1)) + labs( title  = &quot;Monthly Returns of Companies in DJIA&quot;, x = &quot;Monthly Returns&quot; , y = &quot;Density&quot;, caption = &quot;Source: DJIA&quot;) + NULL</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/density_monthly_returns-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>What can you infer from this plot?</p>
+<p>Majority of stocks average roughly 0% return on a monthly basis. The most risky would be DOW as this has the greatest standard deviation - therefore the most uncertainty around returns. Whereas the SPY ETF has the lowest standard deviation giving more certainty around the return which is slightly above 0% monthly.</p>
+<p>Finally, produce a plot that shows the expected monthly return (mean) of a stock on the Y axis and the risk (standard deviation) in the X-axis. Please use <code>ggrepel::geom_text_repel()</code> to label each stock with its ticker symbol</p>
+<pre class="r"><code>library(ggrepel)
+
+#used monthly summ data frame and specifed mean_return and sd_retur n as x and y axis
+ggplot(monthly_summ_1, aes(x= sd_return , y= mean_return, label = symbol)) + geom_point() + geom_text_repel() + theme (axis.title = element_text(face=&quot;bold&quot;),  title = element_text(face=&quot;bold&quot;), plot.title = element_text(hjust = 0.5)) + labs( title  = &quot;Expected Monthly Returns&quot;, x = &quot;Mean Return&quot; , y = &quot;Standard Deviation&quot;, caption = &quot;Source: DJIA&quot;) + NULL</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/risk_return_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="what-does-the-chart-tell-us" class="section level1">
+<h1>What does the chart tell us?</h1>
+<p>The best stocks ar those that offer the highest mean return with the lowest standard deviation - so MSFT would be one of the safer options where as WBA or DOW would be a risker option. For example DOW and BA are significantly more risky than the other stocks that offer similar mean reutrns.</p>
+</div>
