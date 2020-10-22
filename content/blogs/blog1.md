@@ -12,7 +12,7 @@ title: "GDP Composition Over Time"
 ---
 
 
-```{r, setup, echo=FALSE}
+```{r, setup, echo=FALSE, EVAL=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE, 
