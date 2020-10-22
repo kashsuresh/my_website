@@ -98,8 +98,8 @@ disqusShortname = ""
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
-      title = "Donald Trump Approval Ratings"
-      subtitle = "2017-2020"
+      title = "Pay Gap Analysis"
+      subtitle = "Omega Group plc"
       image = "obama.jpg"
       url = "blogs/tempus"
 
