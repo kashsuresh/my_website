@@ -45,6 +45,7 @@ library(openintro)
 library(tidyquant)
 ```
 
+## Load Data
 
 At the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the [Wikipedia GDP page](https://en.wikipedia.org/wiki/Gross_domestic_product).
 
@@ -62,7 +63,7 @@ UN_GDP_data  <-  read_excel(here::here("data", "Download-GDPconstant-USD-countri
  The first thing you need to do is to tidy the data, as it is in wide format and you must make it into long, tidy format. Please express all figures in billions (divide values by `1e9`, or $10^9$), and you want to rename the indicators into something shorter.
 
 
-# Tidy the data
+## Tidy the data
 
 ```{r reshape_GDP_data}
 
@@ -90,7 +91,7 @@ glimpse(tidy_GDP_data)
 # Let us compare GDP components for these 3 countries
 country_list <- c("United States","India", "Germany")
 ```
-#Produce plot
+## Produce plot
 
 ```{r plot1, echo=FALSE, out.width="100%"}
 
@@ -117,7 +118,7 @@ ggplot(GDP_components_data, aes(x= Year , y= Value, colour = `Components of GDP`
 
 Secondly, recall that GDP is the sum of Household Expenditure (Consumption *C*), Gross Capital Formation (business investment *I*), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator `Gross Domestic Product (GDP)` in your dataframe, I would like you to calculate it given its components discussed above.
 
-#Difference between actual and manual calculation
+## Difference between actual and manual calculation
 
 ```{r manual_calc, echo=FALSE, out.width="100%"}
 
@@ -190,7 +191,7 @@ tidy_data_2  <-  UN_GDP_data %>%
 glimpse(tidy_data_2)
 
 
-# Let us compare GDP components for these 3 countries
+#Let us compare GDP components for these 3 countries
 country_list <- c("United States","India", "Germany")
 
 
@@ -216,7 +217,7 @@ ggplot(tidy_data_plot_2)+
 
 ```
 
-#Findings
+## Findings
 
 
 The chart  allows us to compare the composition of GDP between the countries over time. Overall, the percentage contribution of the components seem to be similar across the three countries, with household expenditure accounting for the majority of GDP and net exports accounting for the least.There are time when GCF plays a more important role relative to government expenditure and vice versa, this seems to depend on country specific dynamics. 
