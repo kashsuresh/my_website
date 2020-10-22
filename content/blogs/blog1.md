@@ -11,41 +11,8 @@ slug: GDP
 title: "GDP Composition Over Time"
 ---
 
-```{r, setup, include=FALSE}
-knitr::opts_chunk$set(
-  message = FALSE, 
-  warning = FALSE, 
-  tidy=FALSE,     # display code as typed
-  size="small")   # slightly smaller font for code
-options(digits = 3)
 
-# default figure size
-knitr::opts_chunk$set(
-  fig.width=6.75, 
-  fig.height=6.75,
-  fig.align = "center"
-)
-```
-
-
-```{r load-libraries, include=FALSE}
-library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
-library(mosaic)
-library(ggthemes)
-library(lubridate)
-library(here)
-library(skimr)
-library(janitor)
-library(httr)
-library(readxl)
-library(vroom)
-library(dplyr)
-library(grid)
-library(gridExtra)
-```
-
-
-```{r, setup, echo=FALSE,}
+```{r, setup, echo=FALSE, EVAL=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE, 
@@ -129,7 +96,7 @@ knitr::include_graphics(here::here("images", "gdp1.png"), error = FALSE)
 ```
 
 
-```{r plot1, out.width="100%"}
+```{r plot1, echo=FALSE, out.width="100%"}
 
 GDP_components_data <- tidy_GDP_data %>%
   filter(Country %in% country_list) %>%
@@ -156,7 +123,7 @@ Secondly, recall that GDP is the sum of Household Expenditure (Consumption *C*),
 
 > What is the % difference between what you calculated as GDP and the GDP figure included in the dataframe?
 
-```{r manual_calc, out.width="100%"}
+```{r manual_calc, echo=FALSE, out.width="100%"}
 
 tidy_GDP_manual <-  UN_GDP_data %>%
   pivot_longer(cols = 4:51,
@@ -193,7 +160,7 @@ tidy_GDP_manual <-  UN_GDP_data %>%
 knitr::include_graphics(here::here("images", "gdp2.png"), error = FALSE)
 ```
 
-```{r plot 2, out.width="100%"}
+```{r plot 2, echo=FALSE, out.width="100%"}
 
 tidy_data_2  <-  UN_GDP_data %>%
   pivot_longer(cols = 4:51,
