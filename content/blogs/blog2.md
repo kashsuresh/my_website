@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:26:09-05:00"
-description: Lorem Etiam Nullam
+description: Is there a gender pay gap at Omega Group?
 draft: false
 image: omega.jpg
 keywords: ""

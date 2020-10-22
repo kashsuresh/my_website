@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date:  "`r Sys.Date()`"
-description: ""
+description: "GDP movements over time, focussing on India, Germany and The USA."
 draft: false
 image: dehli.jpg
 keywords: ""
