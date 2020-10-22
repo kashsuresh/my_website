@@ -84,7 +84,7 @@ gender_null %>%
 > Again, as p-value is smaller than 0.05, we can reject the null hypothesis and conclude that the mean salary between men and women is significantly different.
 
 
-## Relationship Experience - Gender?
+## Relationship between experience and gender?
 
 At the board meeting, someone raised the issue that there was indeed a substantial difference between male and female salaries, but that this was attributable to other reasons such as differences in experience. A questionnaire send out to the 50 executives in the sample reveals that the average experience of the men is approximately 21 years, whereas the women only have about 7 years experience on average (see table below).
 
@@ -132,20 +132,11 @@ exp_null %>%
 ```
 
 
-
-## Relationship Salary - Experience ?
+## Relationship between salary and experience?
 
 Someone at the meeting argues that clearly, a more thorough analysis of the relationship between salary and experience is required before any conclusion can be drawn about whether there is any gender-based salary discrimination in the company.
 
 scatterplot to analyse the relationship between salary and experience
-
-
-```{r, salary_exp_scatter}
-
-ggplot(omega, aes(x=experience, y=salary, colour = gender)) + geom_point() + labs(title="Relationship between salary and experience", y= "Salary", x="Experience in years") 
-
-#most females have less experience and may thus earn less, as can be seen towards the left side of the chart. There are limited data points of females with more experience, however those within the set scatter within the male population and not visually significantly below, however neither do they appear to be top earners for their experience group.
-```
 
 
 ## Check correlations between the data
@@ -157,4 +148,4 @@ omega %>%
   theme_bw()
 ```
 
-> most females have less experience and may thus earn less, as can be seen towards the left side of the chart. There are limited data points of females with more experience, however those within the set scatter within the male population and not visually significantly below, however neither do they appear to be top earners for their experience group.
+> In this sample females tend to  have less experience as can be seen towards the left side of the chart. There are limited data points of females with more experience, however those within the set scatter within the male population and not visually significantly below, however neither do they appear to be top earners for their experience group.
