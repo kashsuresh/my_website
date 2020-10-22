@@ -8,7 +8,7 @@ draft: false
 image: trump.jpg
 keywords: ""
 slug: trump
-title: "Donald Trump Ratings Approval Over Time"
+title: "Donald Trump's Ratings Approval Over Time"
 ---
 
 I got the data from fivethirtyeight.com as it has detailed data on [all polls that track the president's approval ](https://projects.fivethirtyeight.com/trump-approval-ratings)
