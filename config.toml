@@ -51,9 +51,9 @@ disqusShortname = ""
       name = "Blogs"
       url = "blogs"
 
-    [[params.navigation.links]]
-      name = "About me"
-      url = "aboutme"
+   # [[params.navigation.links]]
+   #   name = "About me"
+    #  url = "aboutme"
 
    # [[params.navigation.links]]
     #  name = "Elements"
@@ -72,9 +72,9 @@ disqusShortname = ""
       url = "blogs"
 
     # Button Style 2
-    [[params.navigation.button2]]
-      name = "Log In"
-      url = "#"
+   # [[params.navigation.button2]]
+     # name = "Log In"
+     # url = "#"
 
 
   # Banner section
@@ -92,10 +92,10 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Airbnb Mexico City"
-     subtitle = "Analysis on price per night"
-      image = "mexicocity.jpg"
-      url = "blogs/aliquam"
+      title = "Donald Trump Approval Ratings"
+     subtitle = "2017-2020"
+      image = "trump.jpg"
+      url = "blogs/trump"
 
     [[params.tiles.showcase]]
       title = "Pay Gap Analysis"
