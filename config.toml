@@ -100,8 +100,8 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "Pay Gap Analysis"
       subtitle = "Omega Group plc"
-      image = "obama.jpg"
-      url = "blogs/omega"
+      image = "omega.jpg"
+      url = "blogs/Omega"
 
     [[params.tiles.showcase]]
       title = "GDP composition over time"

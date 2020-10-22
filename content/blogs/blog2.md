@@ -7,25 +7,23 @@ description: Lorem Etiam Nullam
 draft: false
 image: omega.jpg
 keywords: ""
-slug: Omega
-title: "Omega Group Pay Discrimination Analysis"
+slug: omega
+title: "Omega Group Pay Gap Analysis"
 ---
 
 At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women. This seemed like a considerable difference, so it was decided that a further analysis of the company salaries was warranted. 
 
-You are asked to carry out the analysis. The objective is to find out whether there is indeed a significant difference between the salaries of men and women, and whether the difference is due to discrimination or whether it is based on another, possibly valid, determining factor. 
 
 ## Loading the data
-
 
 ```{r load_omega_data}
 omega <- read_csv(here::here("data", "omega.csv"))
 glimpse(omega) # examine the data frame
 ```
 
-## Relationship Salary - Gender ?
+## Relationship between salary and gender
 
-Calculate summary statistics on salary by gender. Also, create and print a dataframe where, for each gender, you show the mean, SD, sample size, the t-critical, the SE, the margin of error, and the low/high endpoints of a 95% condifence interval
+I'm going to calculate summary statistics on salary by gender, which include the mean, SD, sample size, the t-critical, the SE, the margin of error, and the low/high endpoints of a 95% condifence interval.
 
 ```{r, confint_single_valiables}
 # Summary Statistics of salary by gender
