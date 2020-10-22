@@ -11,43 +11,38 @@ slug: DJIA
 title: "Risk/Return Analysis on DJIA"
 ---
 
-```{r, setup, echo=FALSE}
+```{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE, 
   tidy=FALSE,     # display code as typed
   size="small")   # slightly smaller font for code
 options(digits = 3)
+
 # default figure size
 knitr::opts_chunk$set(
   fig.width=6.75, 
   fig.height=6.75,
   fig.align = "center"
 )
-
 ```
 
-```{r}
+
+```{r load-libraries, include=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
 library(mosaic)
 library(ggthemes)
 library(lubridate)
-library(fivethirtyeight)
 library(here)
 library(skimr)
 library(janitor)
+library(httr)
+library(readxl)
 library(vroom)
-library(tidyquant)
-library(rvest)    # scrape websites
-library(purrr)  
-library(lubridate) #to handle dates
-library(kableExtra)
-library(knitr)
 library(dplyr)
-library(gapminder)
-library(ggplot2)
-library(patchwork)
-library(scales)
+library(grid)
+library(gridExtra)
+
 ```
 
 
